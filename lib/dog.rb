@@ -25,7 +25,7 @@ class Dog
     DB[:conn].execute(sql)
   end
 
-  def self.new_from_db(row) 
+  def self.new_from_db(row)
     new_dog = self.new
     new_dog.id = row[0]
     new_dog.name = row[1]
@@ -34,9 +34,9 @@ class Dog
   end
 
   def self.find_by_name(name)
-    sql = <<-SQL 
+    sql = <<-SQL
       SELECT *
-      FROM dogs 
+      FROM dogs
       WHERE name = ?
       LIMIT 1
     SQL
@@ -44,6 +44,11 @@ class Dog
     DB[:conn].execute(sql, name).map do |row|
       self.new_from_db(row)
     end.first
+  end
+
+  def update 
+    sql = "UPDATE songs SET name = ?, breed = ? WHERE id = ?"
+    DB[:conn].execute(sql, self.name, self.breed, self.id)
   end
 
   def save
