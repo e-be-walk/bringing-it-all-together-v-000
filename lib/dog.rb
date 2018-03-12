@@ -8,14 +8,22 @@ class Dog
     @breed = breed
   end
 
-  def create_table 
-    sql = <<-SQL 
+  def self.create_table
+    Dog.drop_table
+    sql = <<-SQL
       CREATE TABLE IF NOT EXISTS dogs(
         id INTEGER PRIMARY KEY,
         name TEXT,
         breed TEXT
       )
-      SQL 
+      SQL
       DB[:conn].execute(sql)
   end
+
+  def self.drop_table 
+    sql = "DROP TABLE IF EXISTS dogs"
+    DB[:conn].execute(sql)
+  end
+
+  
 end
