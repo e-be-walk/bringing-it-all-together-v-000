@@ -25,6 +25,16 @@ class Dog
     DB[:conn].execute(sql)
   end
 
+  def save
+    sql= <<-SQL
+    INSERT INTO dogs(name, breed)
+    VALUES(?, ?)
+    SQL
+    DB[:conn].execute(sql, self.name, self.grade)
+    @id = DB[:conn].execute("SELECT last_insert_rowid()FROM dogs")[0][0]
+    self
+  end
+
   def self.new_from_db(row)
     new_dog = self.new
     new_dog.id = row[0]
@@ -50,16 +60,4 @@ class Dog
     sql = "UPDATE songs SET name = ?, breed = ? WHERE id = ?"
     DB[:conn].execute(sql, self.name, self.breed, self.id)
   end
-
-  def save
-    sql= <<-SQL
-    INSERT INTO dogs(name, breed)
-    VALUES(?, ?)
-    SQL
-    DB[:conn].execute(sql, self.name, self.grade)
-    @id = DB[:conn].execute("SELECT last_inerst_rowid()FROM dogs")[0][0]
-    self
-  end
-
-
 end
